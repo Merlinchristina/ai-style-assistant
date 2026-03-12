@@ -71,26 +71,18 @@ const StaticBackground = () => {
 };
 
 const Scene = ({
-  category,
+  productImage,
   backgroundImage,
   transformMode,
   cameraMode,
   videoRef,
 }: {
-  category: string;
+  productImage: string;
   backgroundImage: string | null;
   transformMode: "translate" | "rotate" | "scale";
   cameraMode: boolean;
   videoRef: React.RefObject<HTMLVideoElement>;
 }) => {
-  const colorMap: Record<string, string> = {
-    Sofas: "#6B5B95",
-    Tables: "#8B5E3C",
-    Chairs: "#2C3E50",
-    Beds: "#4A4A4A",
-    Storage: "#8B5E3C",
-    Desks: "#5C4033",
-  };
 
   const showDefaultRoom = !cameraMode && !backgroundImage;
 
