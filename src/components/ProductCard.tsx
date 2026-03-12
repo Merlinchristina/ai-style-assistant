@@ -1,9 +1,11 @@
+import { useState } from "react";
 import { Product } from "@/data/products";
 import { useCart } from "@/context/CartContext";
-import { ShoppingCart, Star } from "lucide-react";
+import { ShoppingCart, Star, View } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import TryInRoom from "@/components/TryInRoom";
 
 interface ProductCardProps {
   product: Product;
