@@ -327,7 +327,7 @@ const Scene = ({
 
       <TransformControls mode={transformMode} size={0.6}>
         <group>
-          <ProductImagePlane imageUrl={productImage} />
+          <FurnitureModel category={category} imageUrl={productImage} />
         </group>
       </TransformControls>
 
