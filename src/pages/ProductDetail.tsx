@@ -58,9 +58,16 @@ const ProductDetail = () => {
                 </>
               )}
             </div>
-            <Button size="lg" className="w-full md:w-auto font-display font-semibold mb-6" onClick={() => addToCart(product)}>
-              <ShoppingCart className="mr-2 h-5 w-5" /> Add to Cart
-            </Button>
+            <div className="flex flex-col sm:flex-row gap-3 mb-6">
+              <Button size="lg" className="flex-1 sm:flex-initial font-display font-semibold" onClick={() => addToCart(product)}>
+                <ShoppingCart className="mr-2 h-5 w-5" /> Add to Cart
+              </Button>
+              {isFurniture && (
+                <Button size="lg" variant="outline" className="flex-1 sm:flex-initial font-display font-semibold gap-2" onClick={() => setTryInRoomOpen(true)}>
+                  <View className="h-5 w-5" /> Try In Your Room
+                </Button>
+              )}
+            </div>
             <div className="grid grid-cols-3 gap-4">
               {[
                 { icon: Truck, label: "Free Delivery" },
