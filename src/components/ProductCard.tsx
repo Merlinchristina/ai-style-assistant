@@ -57,11 +57,21 @@ const ProductCard = ({ product, compact }: ProductCardProps) => {
               <span className="text-xs text-muted-foreground line-through">₹{product.originalPrice.toLocaleString()}</span>
             )}
           </div>
-          <Button size="sm" className="h-8 w-8 p-0" onClick={() => addToCart(product)}>
-            <ShoppingCart className="h-3.5 w-3.5" />
-          </Button>
+          <div className="flex items-center gap-1">
+            {isFurniture && !compact && (
+              <Button size="sm" variant="outline" className="h-8 w-8 p-0" onClick={() => setTryInRoomOpen(true)} title="Try In Your Room">
+                <View className="h-3.5 w-3.5" />
+              </Button>
+            )}
+            <Button size="sm" className="h-8 w-8 p-0" onClick={() => addToCart(product)}>
+              <ShoppingCart className="h-3.5 w-3.5" />
+            </Button>
+          </div>
         </div>
       </div>
+      {isFurniture && (
+        <TryInRoom product={product} open={tryInRoomOpen} onOpenChange={setTryInRoomOpen} />
+      )}
     </motion.div>
   );
 };

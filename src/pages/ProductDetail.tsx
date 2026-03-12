@@ -92,6 +92,10 @@ const ProductDetail = () => {
           </div>
         )}
       </div>
+
+      {isFurniture && product && (
+        <TryInRoom product={product} open={tryInRoomOpen} onOpenChange={setTryInRoomOpen} />
+      )}
     </div>
   );
 };
