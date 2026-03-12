@@ -14,6 +14,8 @@ interface ProductCardProps {
 
 const ProductCard = ({ product, compact }: ProductCardProps) => {
   const { addToCart } = useCart();
+  const [tryInRoomOpen, setTryInRoomOpen] = useState(false);
+  const isFurniture = product.department === "Furniture";
 
   return (
     <motion.div
