@@ -121,7 +121,7 @@ const Scene = ({
 
       <TransformControls mode={transformMode} size={0.6}>
         <group>
-          <FurnitureModel category={category} color={colorMap[category] || "#6B5B95"} />
+          <ProductImagePlane imageUrl={productImage} />
         </group>
       </TransformControls>
 
