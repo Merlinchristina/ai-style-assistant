@@ -275,12 +275,14 @@ const StaticBackground = () => {
 };
 
 const Scene = ({
+  category,
   productImage,
   backgroundImage,
   transformMode,
   cameraMode,
   videoRef,
 }: {
+  category: string;
   productImage: string;
   backgroundImage: string | null;
   transformMode: "translate" | "rotate" | "scale";
