@@ -13,133 +13,19 @@ interface TryInRoomProps {
   onOpenChange: (open: boolean) => void;
 }
 
-// Furniture 3D shapes based on category
-const FurnitureModel = ({ category, color }: { category: string; color: string }) => {
-  const meshRef = useRef<THREE.Group>(null!);
-  const materialProps = { color, roughness: 0.4, metalness: 0.1 };
-
-  if (category === "Sofas") {
-    return (
-      <group ref={meshRef}>
-        <mesh position={[0, 0.3, 0]}>
-          <boxGeometry args={[2.4, 0.4, 1]} />
-          <meshStandardMaterial {...materialProps} />
-        </mesh>
-        <mesh position={[0, 0.75, -0.4]}>
-          <boxGeometry args={[2.4, 0.6, 0.2]} />
-          <meshStandardMaterial {...materialProps} />
-        </mesh>
-        <mesh position={[-1.1, 0.5, 0]}>
-          <boxGeometry args={[0.2, 0.5, 1]} />
-          <meshStandardMaterial {...materialProps} />
-        </mesh>
-        <mesh position={[1.1, 0.5, 0]}>
-          <boxGeometry args={[0.2, 0.5, 1]} />
-          <meshStandardMaterial {...materialProps} />
-        </mesh>
-        {[[-1, 0, -0.35], [1, 0, -0.35], [-1, 0, 0.35], [1, 0, 0.35]].map((pos, i) => (
-          <mesh key={i} position={pos as [number, number, number]}>
-            <cylinderGeometry args={[0.04, 0.04, 0.2]} />
-            <meshStandardMaterial color="#b8860b" metalness={0.8} roughness={0.2} />
-          </mesh>
-        ))}
-        {[-0.7, 0, 0.7].map((x, i) => (
-          <mesh key={`c${i}`} position={[x, 0.55, 0.05]}>
-            <boxGeometry args={[0.65, 0.1, 0.8]} />
-            <meshStandardMaterial color={color} roughness={0.6} />
-          </mesh>
-        ))}
-      </group>
-    );
-  }
-
-  if (category === "Tables") {
-    return (
-      <group ref={meshRef}>
-        <mesh position={[0, 0.75, 0]}>
-          <boxGeometry args={[1.6, 0.06, 0.9]} />
-          <meshStandardMaterial color="#8B5E3C" roughness={0.3} />
-        </mesh>
-        {[[-0.7, 0.37, -0.35], [0.7, 0.37, -0.35], [-0.7, 0.37, 0.35], [0.7, 0.37, 0.35]].map((pos, i) => (
-          <mesh key={i} position={pos as [number, number, number]}>
-            <boxGeometry args={[0.06, 0.72, 0.06]} />
-            <meshStandardMaterial color="#8B5E3C" roughness={0.3} />
-          </mesh>
-        ))}
-      </group>
-    );
-  }
-
-  if (category === "Chairs") {
-    return (
-      <group ref={meshRef}>
-        <mesh position={[0, 0.45, 0]}>
-          <boxGeometry args={[0.5, 0.06, 0.5]} />
-          <meshStandardMaterial {...materialProps} />
-        </mesh>
-        <mesh position={[0, 0.8, -0.22]}>
-          <boxGeometry args={[0.5, 0.65, 0.06]} />
-          <meshStandardMaterial {...materialProps} />
-        </mesh>
-        {[[-0.2, 0.22, -0.2], [0.2, 0.22, -0.2], [-0.2, 0.22, 0.2], [0.2, 0.22, 0.2]].map((pos, i) => (
-          <mesh key={i} position={pos as [number, number, number]}>
-            <cylinderGeometry args={[0.025, 0.025, 0.42]} />
-            <meshStandardMaterial color="#333" metalness={0.6} />
-          </mesh>
-        ))}
-      </group>
-    );
-  }
-
-  if (category === "Beds") {
-    return (
-      <group ref={meshRef}>
-        <mesh position={[0, 0.35, 0]}>
-          <boxGeometry args={[2, 0.3, 2.4]} />
-          <meshStandardMaterial color="#f5f5dc" roughness={0.8} />
-        </mesh>
-        <mesh position={[0, 0.15, 0]}>
-          <boxGeometry args={[2.1, 0.12, 2.5]} />
-          <meshStandardMaterial color="#654321" roughness={0.4} />
-        </mesh>
-        <mesh position={[0, 0.7, -1.2]}>
-          <boxGeometry args={[2.1, 0.8, 0.1]} />
-          <meshStandardMaterial {...materialProps} />
-        </mesh>
-        {[-0.5, 0.5].map((x, i) => (
-          <mesh key={i} position={[x, 0.55, -0.85]}>
-            <boxGeometry args={[0.55, 0.12, 0.35]} />
-            <meshStandardMaterial color="#fff" roughness={0.9} />
-          </mesh>
-        ))}
-      </group>
-    );
-  }
-
-  if (category === "Storage" || category === "Desks") {
-    return (
-      <group ref={meshRef}>
-        <mesh position={[0, 0.5, 0]}>
-          <boxGeometry args={[1.2, 1, 0.4]} />
-          <meshStandardMaterial color="#8B5E3C" roughness={0.4} />
-        </mesh>
-        {[0.2, 0.5, 0.8].map((y, i) => (
-          <mesh key={i} position={[0, y, 0]}>
-            <boxGeometry args={[1.15, 0.03, 0.38]} />
-            <meshStandardMaterial color="#654321" roughness={0.3} />
-          </mesh>
-        ))}
-      </group>
-    );
-  }
+// Displays the actual product image as a billboard plane in 3D space
+const ProductImagePlane = ({ imageUrl }: { imageUrl: string }) => {
+  const texture = useLoader(THREE.TextureLoader, imageUrl);
+  const aspect = texture.image ? texture.image.width / texture.image.height : 1;
+  // Scale to roughly real-world proportions (width ~2m for furniture)
+  const width = 2.2;
+  const height = width / aspect;
 
   return (
-    <group ref={meshRef}>
-      <mesh position={[0, 0.5, 0]}>
-        <boxGeometry args={[1, 1, 1]} />
-        <meshStandardMaterial {...materialProps} />
-      </mesh>
-    </group>
+    <mesh position={[0, height / 2, 0]}>
+      <planeGeometry args={[width, height]} />
+      <meshBasicMaterial map={texture} transparent toneMapped={false} side={THREE.DoubleSide} />
+    </mesh>
   );
 };
 
