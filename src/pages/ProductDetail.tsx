@@ -1,9 +1,11 @@
+import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { getProductById, allProducts } from "@/data/products";
 import { useCart } from "@/context/CartContext";
 import { Button } from "@/components/ui/button";
-import { ShoppingCart, Star, ArrowLeft, Truck, Shield, RotateCcw } from "lucide-react";
+import { ShoppingCart, Star, ArrowLeft, Truck, Shield, RotateCcw, View } from "lucide-react";
 import ProductCard from "@/components/ProductCard";
+import TryInRoom from "@/components/TryInRoom";
 
 const ProductDetail = () => {
   const { id } = useParams();
