@@ -14,7 +14,7 @@ const Checkout = () => {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center max-w-md">
-          <CheckCircle className="h-20 w-20 text-green-500 mx-auto mb-4" />
+          <CheckCircle className="h-20 w-20 text-primary mx-auto mb-4" />
           <h2 className="font-display text-2xl font-bold text-foreground mb-2">Order Placed!</h2>
           <p className="text-muted-foreground mb-6">Thank you for your purchase. Your order will be delivered within 5-7 business days.</p>
           <Link to="/"><Button className="font-display font-semibold">Continue Shopping</Button></Link>
