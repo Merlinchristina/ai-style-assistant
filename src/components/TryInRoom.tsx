@@ -337,7 +337,7 @@ const TryInRoom = ({ product, open, onOpenChange }: TryInRoomProps) => {
                 </Html>
               }>
                 <Scene
-                  category={product.category}
+                  productImage={product.image}
                   backgroundImage={backgroundImage}
                   transformMode={transformMode}
                   cameraMode={cameraMode}
