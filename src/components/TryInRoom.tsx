@@ -13,19 +13,223 @@ interface TryInRoomProps {
   onOpenChange: (open: boolean) => void;
 }
 
-// Displays the actual product image as a billboard plane in 3D space
-const ProductImagePlane = ({ imageUrl }: { imageUrl: string }) => {
+// Realistic 3D furniture models with product image as texture
+const FurnitureModel = ({ category, imageUrl }: { category: string; imageUrl: string }) => {
   const texture = useLoader(THREE.TextureLoader, imageUrl);
-  const aspect = texture.image ? texture.image.width / texture.image.height : 1;
-  // Scale to roughly real-world proportions (width ~2m for furniture)
-  const width = 2.2;
-  const height = width / aspect;
+  texture.colorSpace = THREE.SRGBColorSpace;
 
+  const fabricMat = <meshStandardMaterial map={texture} roughness={0.7} />;
+  const legMat = <meshStandardMaterial color="#8B6914" metalness={0.7} roughness={0.25} />;
+  const woodMat = <meshStandardMaterial color="#6B4226" roughness={0.35} metalness={0.05} />;
+
+  if (category === "Sofas") {
+    return (
+      <group>
+        {/* Base/seat cushion */}
+        <mesh position={[0, 0.32, 0]} castShadow>
+          <boxGeometry args={[2.4, 0.35, 1.05]} />
+          {fabricMat}
+        </mesh>
+        {/* Back cushion */}
+        <mesh position={[0, 0.72, -0.38]} castShadow>
+          <boxGeometry args={[2.2, 0.5, 0.25]} />
+          {fabricMat}
+        </mesh>
+        {/* Back frame */}
+        <mesh position={[0, 0.62, -0.48]} castShadow>
+          <boxGeometry args={[2.4, 0.65, 0.08]} />
+          <meshStandardMaterial color="#3a3a3a" roughness={0.5} />
+        </mesh>
+        {/* Left arm */}
+        <mesh position={[-1.12, 0.48, 0]} castShadow>
+          <boxGeometry args={[0.18, 0.55, 1.05]} />
+          {fabricMat}
+        </mesh>
+        {/* Right arm */}
+        <mesh position={[1.12, 0.48, 0]} castShadow>
+          <boxGeometry args={[0.18, 0.55, 1.05]} />
+          {fabricMat}
+        </mesh>
+        {/* Seat cushion details - 3 cushions */}
+        {[-0.72, 0, 0.72].map((x, i) => (
+          <mesh key={`seat-${i}`} position={[x, 0.52, 0.02]} castShadow>
+            <boxGeometry args={[0.68, 0.08, 0.9]} />
+            {fabricMat}
+          </mesh>
+        ))}
+        {/* Back pillows */}
+        {[-0.65, 0, 0.65].map((x, i) => (
+          <mesh key={`back-${i}`} position={[x, 0.78, -0.3]} castShadow>
+            <boxGeometry args={[0.6, 0.35, 0.18]} />
+            {fabricMat}
+          </mesh>
+        ))}
+        {/* Gold legs */}
+        {[[-1.0, 0.06, 0.4], [1.0, 0.06, 0.4], [-1.0, 0.06, -0.4], [1.0, 0.06, -0.4]].map((pos, i) => (
+          <mesh key={`leg-${i}`} position={pos as [number, number, number]} castShadow>
+            <cylinderGeometry args={[0.03, 0.025, 0.14, 8]} />
+            {legMat}
+          </mesh>
+        ))}
+      </group>
+    );
+  }
+
+  if (category === "Tables") {
+    return (
+      <group>
+        {/* Tabletop */}
+        <mesh position={[0, 0.76, 0]} castShadow>
+          <boxGeometry args={[1.8, 0.05, 0.95]} />
+          {woodMat}
+        </mesh>
+        {/* Top edge bevel */}
+        <mesh position={[0, 0.74, 0]} castShadow>
+          <boxGeometry args={[1.84, 0.02, 0.99]} />
+          <meshStandardMaterial color="#5a3520" roughness={0.3} />
+        </mesh>
+        {/* Legs - tapered */}
+        {[[-0.78, 0.37, -0.38], [0.78, 0.37, -0.38], [-0.78, 0.37, 0.38], [0.78, 0.37, 0.38]].map((pos, i) => (
+          <mesh key={i} position={pos as [number, number, number]} castShadow>
+            <cylinderGeometry args={[0.035, 0.025, 0.73, 8]} />
+            {woodMat}
+          </mesh>
+        ))}
+        {/* Cross support */}
+        <mesh position={[0, 0.2, 0]} castShadow>
+          <boxGeometry args={[1.5, 0.03, 0.03]} />
+          {woodMat}
+        </mesh>
+      </group>
+    );
+  }
+
+  if (category === "Chairs") {
+    return (
+      <group>
+        {/* Seat */}
+        <mesh position={[0, 0.46, 0]} castShadow>
+          <boxGeometry args={[0.52, 0.07, 0.5]} />
+          {fabricMat}
+        </mesh>
+        {/* Seat cushion */}
+        <mesh position={[0, 0.5, 0]} castShadow>
+          <boxGeometry args={[0.48, 0.04, 0.46]} />
+          {fabricMat}
+        </mesh>
+        {/* Backrest */}
+        <mesh position={[0, 0.82, -0.22]} castShadow>
+          <boxGeometry args={[0.48, 0.65, 0.05]} />
+          {fabricMat}
+        </mesh>
+        {/* Back cushion */}
+        <mesh position={[0, 0.75, -0.18]} castShadow>
+          <boxGeometry args={[0.42, 0.4, 0.06]} />
+          {fabricMat}
+        </mesh>
+        {/* Legs */}
+        {[[-0.22, 0.22, -0.22], [0.22, 0.22, -0.22], [-0.22, 0.22, 0.22], [0.22, 0.22, 0.22]].map((pos, i) => (
+          <mesh key={i} position={pos as [number, number, number]} castShadow>
+            <cylinderGeometry args={[0.02, 0.018, 0.44, 8]} />
+            <meshStandardMaterial color="#222" metalness={0.7} roughness={0.3} />
+          </mesh>
+        ))}
+        {/* Armrests */}
+        {[-0.28, 0.28].map((x, i) => (
+          <mesh key={`arm-${i}`} position={[x, 0.62, 0]} castShadow>
+            <boxGeometry args={[0.04, 0.04, 0.4]} />
+            <meshStandardMaterial color="#222" metalness={0.6} roughness={0.3} />
+          </mesh>
+        ))}
+      </group>
+    );
+  }
+
+  if (category === "Beds") {
+    return (
+      <group>
+        {/* Frame base */}
+        <mesh position={[0, 0.14, 0]} castShadow>
+          <boxGeometry args={[2.1, 0.1, 2.5]} />
+          {woodMat}
+        </mesh>
+        {/* Mattress */}
+        <mesh position={[0, 0.34, 0.05]} castShadow>
+          <boxGeometry args={[1.95, 0.28, 2.3]} />
+          <meshStandardMaterial color="#f0ebe0" roughness={0.85} />
+        </mesh>
+        {/* Mattress top */}
+        <mesh position={[0, 0.49, 0.05]} castShadow>
+          <boxGeometry args={[1.92, 0.02, 2.27]} />
+          <meshStandardMaterial color="#e8e2d6" roughness={0.9} />
+        </mesh>
+        {/* Headboard */}
+        <mesh position={[0, 0.65, -1.2]} castShadow>
+          <boxGeometry args={[2.1, 0.85, 0.08]} />
+          {fabricMat}
+        </mesh>
+        {/* Headboard padding */}
+        <mesh position={[0, 0.7, -1.15]} castShadow>
+          <boxGeometry args={[1.95, 0.65, 0.06]} />
+          {fabricMat}
+        </mesh>
+        {/* Pillows */}
+        {[-0.5, 0.5].map((x, i) => (
+          <mesh key={i} position={[x, 0.54, -0.8]} castShadow>
+            <boxGeometry args={[0.55, 0.14, 0.38]} />
+            <meshStandardMaterial color="#fff" roughness={0.9} />
+          </mesh>
+        ))}
+        {/* Legs */}
+        {[[-0.95, 0.05, -1.15], [0.95, 0.05, -1.15], [-0.95, 0.05, 1.15], [0.95, 0.05, 1.15]].map((pos, i) => (
+          <mesh key={`leg-${i}`} position={pos as [number, number, number]}>
+            <cylinderGeometry args={[0.04, 0.03, 0.1, 8]} />
+            {woodMat}
+          </mesh>
+        ))}
+      </group>
+    );
+  }
+
+  if (category === "Storage" || category === "Desks") {
+    return (
+      <group>
+        {/* Main body */}
+        <mesh position={[0, 0.55, 0]} castShadow>
+          <boxGeometry args={[1.3, 1.1, 0.42]} />
+          {woodMat}
+        </mesh>
+        {/* Shelves */}
+        {[0.25, 0.55, 0.85].map((y, i) => (
+          <mesh key={i} position={[0, y, 0.01]} castShadow>
+            <boxGeometry args={[1.25, 0.025, 0.4]} />
+            <meshStandardMaterial color="#5a3520" roughness={0.3} />
+          </mesh>
+        ))}
+        {/* Top */}
+        <mesh position={[0, 1.1, 0]} castShadow>
+          <boxGeometry args={[1.34, 0.03, 0.46]} />
+          <meshStandardMaterial color="#5a3520" roughness={0.3} />
+        </mesh>
+        {/* Side panels */}
+        {[-0.64, 0.64].map((x, i) => (
+          <mesh key={`side-${i}`} position={[x, 0.55, 0]} castShadow>
+            <boxGeometry args={[0.025, 1.08, 0.42]} />
+            {woodMat}
+          </mesh>
+        ))}
+      </group>
+    );
+  }
+
+  // Generic furniture
   return (
-    <mesh position={[0, height / 2, 0]}>
-      <planeGeometry args={[width, height]} />
-      <meshBasicMaterial map={texture} transparent toneMapped={false} side={THREE.DoubleSide} />
-    </mesh>
+    <group>
+      <mesh position={[0, 0.5, 0]} castShadow>
+        <boxGeometry args={[1, 1, 1]} />
+        {fabricMat}
+      </mesh>
+    </group>
   );
 };
 
@@ -71,12 +275,14 @@ const StaticBackground = () => {
 };
 
 const Scene = ({
+  category,
   productImage,
   backgroundImage,
   transformMode,
   cameraMode,
   videoRef,
 }: {
+  category: string;
   productImage: string;
   backgroundImage: string | null;
   transformMode: "translate" | "rotate" | "scale";
@@ -121,7 +327,7 @@ const Scene = ({
 
       <TransformControls mode={transformMode} size={0.6}>
         <group>
-          <ProductImagePlane imageUrl={productImage} />
+          <FurnitureModel category={category} imageUrl={productImage} />
         </group>
       </TransformControls>
 
@@ -337,6 +543,7 @@ const TryInRoom = ({ product, open, onOpenChange }: TryInRoomProps) => {
                 </Html>
               }>
                 <Scene
+                  category={product.category}
                   productImage={product.image}
                   backgroundImage={backgroundImage}
                   transformMode={transformMode}
